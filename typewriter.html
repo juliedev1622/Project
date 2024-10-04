@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typewriter Effect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: transparent;
+        }
+
+        .typewriter-container {
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 70px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-align: left;
+            color: #ffffff;
+            background: -webkit-linear-gradient(white, #5f5b4f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cursor {
+            font-size: 70px;
+            color: #ffffff;
+            animation: blink 0.7s step-end infinite;
+        }
+
+        @keyframes blink {
+            from, to { color: transparent; }
+            50% { color: white; }
+        }
+
+        /* Responsive for mobile */
+        @media screen and (max-width: 768px) {
+            .typewriter-container {
+                font-size: 40px;
+            }
+            .cursor {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="typewriter-container">
+        <span id="typewriter"></span>
+        <span class="cursor">|</span>
+    </div>
+
+    <script>
+        const textList = [
+            "PERSONAL USE", 
+            "FAMILY USE", 
+            "COMPANY SERVICE", 
+            "FLEET ACCOUNTS", 
+            "BUSINESS PURPOSES", 
+            "GRAB CAR", 
+            "OTHER USE", 
+            "JOYRIDE CAR"
+        ];
+
+        let currentIndex = 0;
+        let currentText = '';
+        let isDeleting = false;
+        let speed = 150;
+
+        function type() {
+            const typewriterElement = document.getElementById('typewriter');
+            const fullText = textList[currentIndex];
+
+            if (isDeleting) {
+                currentText = fullText.substring(0, currentText.length - 1);
+            } else {
+                currentText = fullText.substring(0, currentText.length + 1);
+            }
+
+            typewriterElement.textContent = currentText;
+
+            if (!isDeleting && currentText === fullText) {
+                isDeleting = true;
+                speed = 1000; // Pause before deleting
+            } else if (isDeleting && currentText === '') {
+                isDeleting = false;
+                currentIndex = (currentIndex + 1) % textList.length; // Move to the next item
+                speed = 500; // Pause before typing the next word
+            } else {
+                speed = isDeleting ? 100 : 150;
+            }
+
+            setTimeout(type, speed);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            type();
+        });
+    </script>
+</body>
+</html>
